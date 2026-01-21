@@ -3,86 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SNIPER ARENA</title>
+    <title>SNIPER SKILL ARENA</title>
     <style>
-        :root { --gold: #ffcc00; }
+        :root { --neon: #ffcc00; --bg: #000; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
-            margin: 0; background: #000; color: var(--gold); 
-            font-family: 'Arial Black', sans-serif; overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;
+            background-color: var(--bg); color: var(--neon); 
+            font-family: 'Courier New', Courier, monospace;
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; min-height: 100vh; overflow: hidden;
         }
 
-        /* SFONDO 3D TECNICO */
-        .grid-bg {
+        /* DISEGNO TECNICO 3D DI SFONDO */
+        .background-3d {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255,204,0,0.1) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,204,0,0.1) 1px, transparent 1px);
-            background-size: 40px 40px; transform: perspective(500px) rotateX(60deg);
-            z-index: -1; animation: slide 2s linear infinite;
+            background: linear-gradient(rgba(255, 204, 0, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 204, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px; transform: perspective(500px) rotateX(60deg);
+            z-index: -1; animation: moveBg 3s linear infinite;
         }
-        @keyframes slide { from { background-position: 0 0; } to { background-position: 0 40px; } }
+        @keyframes moveBg { from { background-position: 0 0; } to { background-position: 0 50px; } }
 
-        .panel { 
-            background: rgba(10,10,10,0.95); border: 3px solid var(--gold); 
-            padding: 20px; width: 90%; max-width: 450px; text-align: center; border-radius: 20px;
-            position: relative; z-index: 10;
-        }
-
-        #timer { font-size: 5rem; color: #fff; margin: 10px 0; text-shadow: 0 0 20px var(--gold); }
-
-        /* ARENA CON LINK DIRETTO */
-        .click-wrapper {
-            display: block; width: 100%; height: 250px; position: relative;
-            background: #000; border: 2px solid #222; border-radius: 10px;
-            overflow: hidden; text-decoration: none; cursor: crosshair;
+        .panel {
+            width: 90%; max-width: 450px; background: rgba(10, 10, 10, 0.95);
+            border: 2px solid var(--neon); border-radius: 15px; padding: 25px;
+            text-align: center; box-shadow: 0 0 40px rgba(255, 204, 0, 0.3);
         }
 
-        #target {
+        #timer { font-size: 4.5rem; font-weight: bold; color: #fff; text-shadow: 0 0 15px var(--neon); margin: 10px 0; }
+
+        /* ARENA E PALLINA - FLUIDITÀ 60FPS */
+        .game-link {
+            display: block; width: 100%; height: 280px; background: #000;
+            border: 1px solid #333; position: relative; overflow: hidden;
+            border-radius: 8px; cursor: crosshair; text-decoration: none;
+        }
+
+        .target-ball {
             width: 50px; height: 50px; position: absolute;
-            background: radial-gradient(circle, #fff, var(--gold));
-            border-radius: 50%; box-shadow: 0 0 30px var(--gold);
-            /* FLUIDITÀ TOTALE */
-            animation: moveBall 3s infinite alternate ease-in-out;
-            pointer-events: none; /* Il click passa attraverso la pallina e va al link */
+            background: radial-gradient(circle, #fff, var(--neon));
+            border-radius: 50%; box-shadow: 0 0 25px var(--neon);
+            /* Animazione fluida gestita dal sistema */
+            animation: sniperMove 4s infinite alternate ease-in-out;
+            pointer-events: none; /* Il click passa attraverso e attiva il link */
         }
 
-        @keyframes moveBall {
-            0%   { top: 10%; left: 10%; }
-            50%  { top: 70%; left: 80%; }
-            100% { top: 20%; left: 40%; }
+        @keyframes sniperMove {
+            0% { top: 10%; left: 10%; }
+            33% { top: 70%; left: 60%; }
+            66% { top: 20%; left: 80%; }
+            100% { top: 80%; left: 20%; }
         }
 
-        .btn {
-            display: block; width: 100%; background: var(--gold); color: #000;
-            padding: 20px; font-size: 1.8rem; font-weight: bold;
-            text-decoration: none; border-radius: 10px; margin-top: 20px;
-            text-transform: uppercase;
+        .btn-main {
+            display: block; width: 100%; background: var(--neon); color: #000;
+            padding: 20px; font-size: 1.6rem; font-weight: 900;
+            text-decoration: none; border-radius: 8px; margin: 20px 0;
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        .wallet { background: #111; padding: 10px; border: 1px dashed #555; font-size: 0.8rem; word-break: break-all; margin-top: 15px; }
+        .wallet-box { background: #111; padding: 12px; border: 1px dashed #555; font-size: 0.8rem; }
+        .legal { font-size: 9px; color: #555; margin-top: 15px; text-align: justify; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <div class="grid-bg"></div>
+    <div class="background-3d"></div>
 
     <div class="panel">
-        <h1 style="margin:0;">SNIPER ARENA</h1>
+        <h1 style="font-size: 1.5rem; letter-spacing: 4px;">SNIPER ARENA</h1>
         <div id="timer">05:00</div>
 
-        <a href="https://otieu.com/4/8892095" class="click-wrapper" target="_blank">
-            <div id="target"></div>
+        <a href="https://otieu.com/4/8892095" target="_blank" class="game-link">
+            <div class="target-ball"></div>
         </a>
 
-        <a href="https://otieu.com/4/8892095" class="btn" target="_blank">DEPOSIT & START</a>
+        <a href="https://otieu.com/4/8892095" target="_blank" class="btn-main">DEPOSIT & START</a>
 
-        <div class="wallet">
-            USDT ADDR (BEP20):<br>
-            <b style="color:#fff;">0x7fd653a9482d92994936336e47c1605330368305</b>
+        <div class="wallet-box">
+            USDT BEP20:<br>
+            <b style="color:#fff; word-break: break-all;">0x7fd653a9482d92994936336e47c1605330368305</b>
+        </div>
+
+        <div class="legal">
+            18+ ONLY. HOUSE EDGE 90%. WINNERS ARE CALCULATED AUTOMATICALLY. NO REFUNDS.
         </div>
     </div>
 
     <script>
+        // Timer semplice e leggero
         let t = 300;
         setInterval(() => {
             let m = Math.floor(t/60); let s = t%60;
@@ -92,6 +102,7 @@
     </script>
 </body>
 </html>
+
 
 
 
