@@ -3,105 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SNIPER SKILL ARENA</title>
+    <title>ARENA</title>
     <style>
-        :root { --neon: #ffcc00; --bg: #000; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #ffcc00; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; }
+
+        /* SFONDO 3D */
+        .bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(255,204,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,204,0,0.1) 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(60deg); z-index: -1; }
+
+        .panel { width: 90%; max-width: 400px; background: rgba(10,10,10,0.95); border: 2px solid #ffcc00; border-radius: 15px; padding: 20px; text-align: center; }
         
-        body { 
-            background-color: var(--bg); color: var(--neon); 
-            font-family: 'Courier New', Courier, monospace;
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; min-height: 100vh; overflow: hidden;
+        #timer { font-size: 4rem; font-weight: bold; color: #fff; margin: 10px 0; }
+
+        /* IL SEGRETO: UN LINK REALE CHE COPRE TUTTA L'ARENA */
+        .game-box {
+            display: block; width: 100%; height: 250px; background: #050505; border: 1px solid #333;
+            position: relative; overflow: hidden; border-radius: 10px; text-decoration: none;
         }
 
-        /* DISEGNO TECNICO 3D DI SFONDO */
-        .background-3d {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255, 204, 0, 0.1) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255, 204, 0, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px; transform: perspective(500px) rotateX(60deg);
-            z-index: -1; animation: moveBg 3s linear infinite;
+        /* PALLINA FLUIDA (SOLO DISEGNO, NON INTERFERISCE COL CLICK) */
+        .ball {
+            width: 40px; height: 40px; position: absolute;
+            background: radial-gradient(circle, #fff, #ffcc00);
+            border-radius: 50%; box-shadow: 0 0 20px #ffcc00;
+            animation: move 4s infinite alternate ease-in-out;
+            pointer-events: none; /* Fondamentale: il click passa attraverso la palla */
         }
-        @keyframes moveBg { from { background-position: 0 0; } to { background-position: 0 50px; } }
-
-        .panel {
-            width: 90%; max-width: 450px; background: rgba(10, 10, 10, 0.95);
-            border: 2px solid var(--neon); border-radius: 15px; padding: 25px;
-            text-align: center; box-shadow: 0 0 40px rgba(255, 204, 0, 0.3);
+        @keyframes move {
+            0% { transform: translate(10px, 10px); }
+            50% { transform: translate(250px, 150px); }
+            100% { transform: translate(100px, 20px); }
         }
 
-        #timer { font-size: 4.5rem; font-weight: bold; color: #fff; text-shadow: 0 0 15px var(--neon); margin: 10px 0; }
-
-        /* ARENA E PALLINA - FLUIDITÀ 60FPS */
-        .game-link {
-            display: block; width: 100%; height: 280px; background: #000;
-            border: 1px solid #333; position: relative; overflow: hidden;
-            border-radius: 8px; cursor: crosshair; text-decoration: none;
+        .btn {
+            display: block; width: 100%; background: #ffcc00; color: #000;
+            padding: 15px; font-size: 1.5rem; font-weight: bold; text-decoration: none;
+            margin-top: 15px; border-radius: 10px; text-transform: uppercase;
         }
-
-        .target-ball {
-            width: 50px; height: 50px; position: absolute;
-            background: radial-gradient(circle, #fff, var(--neon));
-            border-radius: 50%; box-shadow: 0 0 25px var(--neon);
-            /* Animazione fluida gestita dal sistema */
-            animation: sniperMove 4s infinite alternate ease-in-out;
-            pointer-events: none; /* Il click passa attraverso e attiva il link */
-        }
-
-        @keyframes sniperMove {
-            0% { top: 10%; left: 10%; }
-            33% { top: 70%; left: 60%; }
-            66% { top: 20%; left: 80%; }
-            100% { top: 80%; left: 20%; }
-        }
-
-        .btn-main {
-            display: block; width: 100%; background: var(--neon); color: #000;
-            padding: 20px; font-size: 1.6rem; font-weight: 900;
-            text-decoration: none; border-radius: 8px; margin: 20px 0;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
-
-        .wallet-box { background: #111; padding: 12px; border: 1px dashed #555; font-size: 0.8rem; }
-        .legal { font-size: 9px; color: #555; margin-top: 15px; text-align: justify; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <div class="background-3d"></div>
+<div class="bg"></div>
 
-    <div class="panel">
-        <h1 style="font-size: 1.5rem; letter-spacing: 4px;">SNIPER ARENA</h1>
-        <div id="timer">05:00</div>
+<div class="panel">
+    <h1>SNIPER SKILL</h1>
+    <div id="timer">05:00</div>
 
-        <a href="https://otieu.com/4/8892095" target="_blank" class="game-link">
-            <div class="target-ball"></div>
-        </a>
+    <a href="https://otieu.com/4/8892095" target="_blank" class="game-box">
+        <div class="ball"></div>
+    </a>
 
-        <a href="https://otieu.com/4/8892095" target="_blank" class="btn-main">DEPOSIT & START</a>
+    <a href="https://otieu.com/4/8892095" target="_blank" class="btn">DEPOSIT NOW</a>
 
-        <div class="wallet-box">
-            USDT BEP20:<br>
-            <b style="color:#fff; word-break: break-all;">0x7fd653a9482d92994936336e47c1605330368305</b>
-        </div>
+    <p style="font-size: 10px; margin-top: 10px; color: #444;">USDT BEP20: 0x7fd653a9482d92994936336e47c1605330368305</p>
+</div>
 
-        <div class="legal">
-            18+ ONLY. HOUSE EDGE 90%. WINNERS ARE CALCULATED AUTOMATICALLY. NO REFUNDS.
-        </div>
-    </div>
+<script>
+    let t = 300;
+    setInterval(() => {
+        let m = Math.floor(t/60); let s = t%60;
+        document.getElementById('timer').innerText = `0${m}:${s < 10 ? '0' : ''}${s}`;
+        if(t <= 0) t = 300; else t--;
+    }, 1000);
+</script>
 
-    <script>
-        // Timer semplice e leggero
-        let t = 300;
-        setInterval(() => {
-            let m = Math.floor(t/60); let s = t%60;
-            document.getElementById('timer').innerText = `0${m}:${s<10?'0':''}${s}`;
-            if(t<=0) t=300; else t--;
-        }, 1000);
-    </script>
 </body>
 </html>
+
 
 
 
