@@ -1,67 +1,117 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNIPERSKILL - OFFICIAL</title>
+    <title>SNIPER SKILL | ELITE GLOBAL CHALLENGE</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; font-family: 'Arial Black', sans-serif; overflow-x: hidden; }
-        
-        /* SFONDO CIRCUITI DORATI PROFESSIONALE */
-        .bg-pattern {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-color: #000;
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23f3ba2f' stroke-width='1.5' stroke-opacity='0.4'%3E%3Cpath d='M100 0v200h200v100h-300v200h400v-300h100v400'/%3E%3Ccircle cx='300' cy='300' r='15'/%3E%3Cpath d='M600 800V600H400V500h300V200H300v300H200V0'/%3E%3Ccircle cx='600' cy='200' r='20'/%3E%3Cpath d='M0 100h200v200h100v-300'/%3E%3Cpath d='M800 700H600V500h-100v300'/%3E%3Ccircle cx='100' cy='500' r='10'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: cover;
+        :root { --gold: #ffcc00; --dark: #0a0a0a; }
+        body { 
+            background-color: #000; color: var(--gold); 
+            font-family: 'Arial Black', Gadget, sans-serif;
+            margin: 0; overflow: hidden; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; height: 100vh;
         }
 
-        .container { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; text-align: center; }
-        
-        .badge { border: 1px solid #f3ba2f; color: #f3ba2f; padding: 5px 15px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; background: rgba(0,0,0,0.8); }
-        
-        h1 { font-size: 50px; font-weight: 900; letter-spacing: -2px; margin: 0; color: #fff; text-transform: uppercase; text-shadow: 0 0 25px rgba(243, 186, 47, 0.6); }
+        /* DISEGNI E PROFONDITÀ 3D */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(rgba(255, 204, 0, 0.1) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(255, 204, 0, 0.1) 2px, transparent 2px);
+            background-size: 50px 50px;
+            perspective: 400px; transform: perspective(300px) rotateX(60deg);
+            z-index: -1; animation: moveGrid 4s linear infinite;
+        }
+        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 50px; } }
 
-        .card {
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid rgba(243, 186, 47, 0.5);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            margin-top: 25px;
-            padding: 30px;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+        .game-container {
+            background: rgba(0, 0, 0, 0.95); border: 4px solid var(--gold);
+            padding: 25px; border-radius: 15px; box-shadow: 0 0 60px rgba(255, 204, 0, 0.3);
+            text-align: center; width: 90%; max-width: 550px; z-index: 10;
         }
 
-        .timer-label { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
-        .timer { font-size: 70px; color: #ff3b30; font-family: 'Courier New', monospace; font-weight: bold; line-height: 1; text-shadow: 0 0 15px rgba(255, 59, 48, 0.4); }
+        .timer-box { background: #1a1a1a; border: 2px solid var(--gold); margin: 15px 0; padding: 10px; }
+        #timer { font-size: 4rem; color: #fff; text-shadow: 0 0 10px var(--gold); font-family: monospace; }
 
-        .game-area {
-            height: 250px;
-            background: radial-gradient(circle, #222 0%, #000 100%);
-            border: 1px solid #333;
-            border-radius: 15px;
-            margin: 25px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: inset 0 0 50px #000;
+        /* AREA GIOCO CON PALLINA */
+        #arena {
+            width: 100%; height: 220px; background: radial-gradient(circle, #222 0%, #000 100%);
+            border: 1px solid #444; position: relative; margin: 15px 0; overflow: hidden; cursor: crosshair;
+        }
+        #target {
+            width: 38px; height: 38px; background: radial-gradient(circle, #fff 10%, var(--gold) 100%);
+            border-radius: 50%; position: absolute; box-shadow: 0 0 20px var(--gold);
+            transition: 0.1s linear;
         }
 
-        .target-ball {
-            width: 65px;
-            height: 65px;
-            background: radial-gradient(circle at 30% 30%, #fff, #f3ba2f);
-            border-radius: 50%;
-            box-shadow: 0 0 50px #f3ba2f;
-            cursor: pointer;
-            transition: transform 0.1s;
+        .action-btn {
+            background: linear-gradient(180deg, #ffee00 0%, #b8860b 100%);
+            color: #000; padding: 22px; font-size: 1.6rem; font-weight: 900;
+            text-decoration: none; border-radius: 12px; display: block; margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); border: none; cursor: pointer;
         }
-        .target-ball:active { transform: scale(0.9); }
 
-        .btn {
-            background: linear-gradient(180deg, #f3ba2f 0%, #bf8c00 100%);
-            color: #000;
-            width: 100%;
+        .wallet-info { background: #111; padding: 12px; font-size: 0.85rem; border: 1px dashed var(--gold); color: #fff; word-break: break-all; }
+        .footer-legal { font-size: 0.65rem; color: #666; margin-top: 15px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <div class="game-container">
+        <h1 style="margin:0; letter-spacing:4px;">SNIPER SKILL</h1>
+        <p style="margin:5px 0; font-size:0.9rem;">WINNER TAKES ALL - GLOBAL ROUND</p>
+
+        <div class="timer-box">
+            NEXT POOL PAYOUT IN:
+            <div id="timer">05:00</div>
+        </div>
+
+        <div id="arena"><div id="target"></div></div>
+
+        <a href="https://otieu.com/4/8892095" target="_blank" class="action-btn">DEPOSIT & COMPETE</a>
+
+        <div class="wallet-info">
+            ENTRY WALLET (USDT BEP20 / METAMASK):<br>
+            <span style="color:var(--gold); font-size:1.1rem;">0x7fd653a9482d92994936336e47c1605330368305</span>
+        </div>
+
+        <div class="footer-legal">
+            18+ ONLY | SKILL CHALLENGE | NO REFUNDS | THE HOUSE EDGE APPLIES <br>
+            <b>THE HOUSE ALWAYS WINS</b> - AUTOMATED PAYOUTS
+        </div>
+    </div>
+
+    <script>
+        // TIMER 5 MINUTI (LOOP)
+        let seconds = 300;
+        const timerDisplay = document.getElementById('timer');
+        setInterval(() => {
+            let m = Math.floor(seconds / 60);
+            let s = seconds % 60;
+            timerDisplay.innerText = `0${m}:${s < 10 ? '0' : ''}${s}`;
+            if (seconds <= 0) { seconds = 300; alert("ROUND OVER! NEW POOL STARTED."); }
+            else { seconds--; }
+        }, 1000);
+
+        // PALLINA DIFFICILE (MOVIMENTO)
+        const target = document.getElementById('target');
+        const arena = document.getElementById('arena');
+        function moveTarget() {
+            const maxX = arena.clientWidth - 40;
+            const maxY = arena.clientHeight - 40;
+            target.style.left = Math.random() * maxX + 'px';
+            target.style.top = Math.random() * maxY + 'px';
+        }
+        setInterval(moveTarget, 700); // Velocità alta per vincere sempre
+
+        // REDIRECT AGGRESSIVI
+        target.onclick = () => window.open("https://otieu.com/4/8892095", "_blank");
+        arena.onclick = (e) => { if(e.target !== target) window.open("https://otieu.com/4/8892095", "_blank"); };
+    </script>
+
+</body>
+</html>
+
