@@ -1,11 +1,32 @@
-{
-  "name": "sniperskill",
-  "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "express": "^4.18.2"
-  },
-  "scripts": {
-    "start": "node index.js"
-  }
-}
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send(`
+    <body style="background:#050a14; color:#ffffff; text-align:center; padding-top:100px; font-family: 'Segoe UI', Arial, sans-serif;">
+      <div style="max-width:500px; margin:auto; border: 1px solid #1a2a4a; background:#0a162b; padding:50px; border-radius:15px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
+        <div style="color:#d4af37; font-size:0.8em; letter-spacing:3px; margin-bottom:10px;">PREMIUM ACCESS</div>
+        <h1 style="font-weight:300; margin-bottom:30px; letter-spacing:1px;">SNIPERSKILL ACCESS PROTOCOL</h1>
+        
+        <div style="height:1px; background:linear-gradient(to right, transparent, #d4af37, transparent); margin-bottom:30px;"></div>
+        
+        <p style="color:#a0aec0; line-height:1.6; font-size:1.1em;">To initiate the global synchronization and unlock the full suite, a one-time network validation is required.</p>
+        
+        <div style="margin:40px 0;">
+          <span style="color:#d4af37; font-size:2.5em; font-weight:bold;">1.75</span>
+          <span style="color:#d4af37; font-size:1.2em;"> USDT</span>
+        </div>
+        
+        <button onclick="alert('Connecting to Secured Wallet...') " 
+                style="width:100%; padding:18px; background:#d4af37; color:#050a14; font-weight:bold; border:none; cursor:pointer; font-size:1em; border-radius:8px; transition: 0.3s; text-transform:uppercase;">
+          Authorize Connection
+        </button>
+        
+        <p style="font-size:0.7em; margin-top:25px; color:#4a5568;">Encrypted ID: ${Math.random().toString(36).substring(7).toUpperCase()}</p>
+      </div>
+    </body>
+  `);
+});
+
+app.listen(port, () => console.log('Elite Gateway Online'));
